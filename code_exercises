@@ -1,0 +1,110 @@
+
+/* EXERCISE 1: START BY GETTING A FEEL 
+SELECT title, score
+FROM hacker_news
+ORDER BY score DESC
+LIMIT 5;
+*/
+
+/* COLUMNS: title, user, score, timestamp, url */
+
+/* EXERCISE 2: FIND THE TOTAL SCORE OF ALL STORIES */
+
+/*
+SELECT SUM(score)
+FROM hacker_news;
+*/
+
+/* EXERCISE 3: FIND THE INDIVUDAL USERS WHO HAVE GOTTEN COMBINED SCORES OF MORE THAN 200, AND THEIR COMBINED SCORES. */
+
+/*
+SELECT user, SUM(score)
+FROM hacker_news
+GROUP BY user
+HAVING SUM(score) > 200
+ORDER BY 2 DESC;
+*/
+
+/* EXERCISE 4: THEN, WE WANT TO ADD THESE USERS' SCORES TOGETHER AND DIVIDE BY THE TOTAL TO GET THE PERCENTAGE*/
+
+/*
+SELECT (517 + 309 + 304 + 282) / 6366.0;
+*/
+
+/* HOW MANY TIMES HAS THIS LINK (https://www.youtube.com/watch?v=dQw4w9WgXcQ)BEEN POSTED? */
+
+/*
+SELECT user, 
+  COUNT(*)
+FROM hacker_news
+WHERE URL like 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+GROUP BY user
+ORDER BY COUNT(*) DESC;
+*/
+
+/*
+'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+*/
+
+
+/* EXERCISE 6: WHICH OF THESE SITES FEED HACKER NEWS THE MOST? */
+/*
+SELECT CASE
+   WHEN url LIKE '%github.com%' THEN 'GitHub'
+   WHEN url LIKE '%medium.com%' THEN 'Medium'
+   WHEN url LIKE '%nytimes.com%' THEN 'NY Times'
+   ELSE 'Other Source'
+  END AS 'Source'
+FROM hacker_news;
+*/
+
+/* EXERCISE 7: ADD A COLUMN TO THE PREVIOUS QUERY FOR THE NUMBER OF STORIES FROM EACH URL USING COUNT(), GROUP BY, AND CASE STATEMENT. */
+/*
+SELECT CASE
+   WHEN url LIKE '%github.com%' THEN 'GitHub'
+   WHEN url LIKE '%medium.com%' THEN 'Medium'
+   WHEN url LIKE '%nytimes.com%' THEN 'New York Times'
+   ELSE 'Other'
+  END AS 'Source',
+  COUNT(*)
+FROM hacker_news
+GROUP BY 1;
+*/
+/*
+SELECT timestamp
+FROM hacker_news
+LIMIT 10;
+*/
+/*
+SELECT timestamp,
+  strftime('%H', timestamp)
+FROM hacker_news
+GROUP BY 1
+LIMIT 20;
+*/
+
+/* EXERCISE 10: usingstrftime(), write a query that returns the hours of the time stamp, average score for each hour, and count of stories for each hour. */
+/*
+SELECT strftime('%H', timestamp),
+  AVG(score),
+  COUNT(*)
+FROM hacker_news
+GROUP BY 1
+ORDER BY 1;
+*/
+
+/* EXERCISE 11: USING THE PREVIOUS QUERY. ROUND THE AVERAGE SCORES ROUND() RENAME THE COLUMNS TO AMKE IT MORE READABLE (AS), AND ADD A WHERE CLAUSE TO FILTER OUT THE NULL VALUES IN TIMESTAMP. */
+
+SELECT strftime('%H', timestamp) AS 'Hour', 
+   ROUND(AVG(score), 1) AS 'Average Score', 
+   COUNT(*) AS 'Number of Stories'
+FROM hacker_news
+WHERE timestamp IS NOT NULL
+GROUP BY 1
+ORDER BY 1;
+
+
+
+
+
+
